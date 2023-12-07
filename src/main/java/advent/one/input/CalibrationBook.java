@@ -5,7 +5,37 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Getter
-public class CalibrationDocument {
+public class CalibrationBook {
+
+    public static String[] splitBy(String calibrationDocument, String delimeter) {
+        return calibrationDocument.split(delimeter);
+    }
+
+    public static int findCalibrationNumber(String calibrationLine) {
+        // Remove all non numerics
+        String numerics = calibrationLine.replaceAll("[^0-9]", "");
+        // Get first numeric
+        String firstNum =numerics.substring(0, 1);
+        // Get last numeric
+        String lastNum = numerics.substring(numerics.length() - 1, numerics.length());
+        // Return concatenated value as int
+        return Integer.parseInt(firstNum.concat(lastNum));
+    }
+
+    private String sampleOne =
+            "1abc2\n" +
+            "pqr3stu8vwx\n" +
+            "a1b2c3d4e5f\n" +
+            "treb7uchet";
+
+    private String sampleTwo =
+            "two1nine\n" +
+            "eightwothree\n" +
+            "abcone2threexyz\n" +
+            "xtwone3four\n" +
+            "4nineeightseven2\n" +
+            "zoneight234\n" +
+            "7pqrstsixteen";
 
     private String calibrationText =
             "gtlbhbjgkrb5sixfivefivetwosix\n" +
