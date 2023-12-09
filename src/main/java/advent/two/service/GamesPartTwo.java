@@ -16,10 +16,6 @@ public class GamesPartTwo implements ApplicationListener<ApplicationReadyEvent> 
     @Autowired
     private CubeBag cubeBag;
 
-    private int redCubes = 12;
-    private int greenCubes = 13;
-    private int blueCubes = 14;
-
     @Override
     public void onApplicationEvent(ApplicationReadyEvent event) {
         // Parse the games and extract the information required for each game

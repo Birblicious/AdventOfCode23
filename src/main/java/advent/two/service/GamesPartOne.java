@@ -23,10 +23,10 @@ public class GamesPartOne implements ApplicationListener<ApplicationReadyEvent> 
     @Override
     public void onApplicationEvent(ApplicationReadyEvent event) {
         // Parse the games and extract the information required for each game
-        //cubeBag.fillTheGameMap(cubeBag.getGames(), "\n", ";");
+        // cubeBag.fillTheGameMap(cubeBag.getGames(), "\n", ";");
         // Find if the game is possible to play with the given cubes
-        //int possibleGameIDSummed = findGamesPossible(cubeBag.getGameMap());
-        //System.out.println("Possible game IDs summed up is: " + possibleGameIDSummed);
+        // int possibleGameIDSummed = findGamesPossible(cubeBag.getGameMap());
+        // System.out.println("Possible game IDs summed up is: " + possibleGameIDSummed);
     }
 
     private int findGamesPossible(Map<Integer, List<Games>> games) {
