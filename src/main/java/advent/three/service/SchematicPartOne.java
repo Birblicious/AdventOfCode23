@@ -26,6 +26,7 @@ public class SchematicPartOne implements ApplicationListener<ApplicationReadyEve
 
     private void checkIfNestToSymbol() {
         int total = 0;
+        int cogBoi = 0;
         for (Map.Entry<Integer, List<IndexDetails>> numMap: schematic.getNumericMapPerLine().entrySet()) {
             int lineNumberNum = numMap.getKey();
             for (IndexDetails nDetails: numMap.getValue()) {
@@ -43,12 +44,23 @@ public class SchematicPartOne implements ApplicationListener<ApplicationReadyEve
                             System.out.println(nDetails.getAlphaNumeric() + "---" + lineNumberNum + "---" + lineNumberSym + "---" + sDetails.getAlphaNumeric() + "---" + (nDetails.getBeginIndex() - 1) + "---" + (nDetails.getEndIndex() + 1) + "---" + sDetails.getEndIndex());
                             nDetails.setTagged(true);
                             total += Integer.parseInt(nDetails.getAlphaNumeric());
+                            if(sDetails.getAlphaNumeric().equals("*")) {
+                                sDetails.getCogs().add(Integer.valueOf(nDetails.getAlphaNumeric()));
+                            }
+                            if(sDetails.getCogs().size() == 2) {
+                                cogBoi += sDetails.getCogs().get(0) * sDetails.getCogs().get(1);
+                            }
                         }
                     }
                 }
             }
         }
+        // 549908
         System.out.println(total);
+        // 81166799
+        System.out.println(cogBoi);
     }
+
+
 
 }
