@@ -16,6 +16,7 @@ public class ScratchPartOne implements ApplicationListener<ApplicationReadyEvent
     public void onApplicationEvent(ApplicationReadyEvent event) {
         String[] splitNumbers = scratchCard.splitCard(scratchCard.getInput());
         scratchCard.parseAndFillMaps(splitNumbers);
-        scratchCard.calculatePoints();
+        // scratchCard.calculatePoints();
+        scratchCard.calculatePointsCopied();
     }
 }

@@ -63,6 +63,35 @@ public class ScratchCard {
         System.out.println("Total Points is: " + totalPoints);
     }
 
+    public void calculatePointsCopied() {
+        Map<Integer, Integer> copiesMap = new TreeMap<>();
+        for (Map.Entry<Integer, List<Integer>> winningLines: winningNumbersMap.entrySet()) {
+            copiesMap.putIfAbsent(winningLines.getKey(), 1);
+            int matches = 0;
+            for (Integer winningNumber: winningLines.getValue()) {
+                if(playedNumbersMap.get(winningLines.getKey()).contains(winningNumber)) {
+                    matches++;
+                }
+            }
+
+            for(int i = 1; i <= matches; i++) {
+                int line = winningLines.getKey() + i;
+                Integer currentCopyNum = copiesMap.get(line) == null ? 1 : copiesMap.get(line);
+                Integer addCopies = copiesMap.get(winningLines.getKey());
+
+                currentCopyNum += addCopies;
+                copiesMap.put(line, currentCopyNum);
+            }
+
+        }
+        int totalCopies = 0;
+        for (Map.Entry<Integer, Integer> copyLine: copiesMap.entrySet()) {
+            totalCopies += copyLine.getValue();
+        }
+
+        System.out.println("Total copies acquired: " + totalCopies);
+    }
+
     @Getter
     private String exampleOne =
             "Card 1: 41 48 83 86 17 | 83 86  6 31 17  9 48 53\n" +
