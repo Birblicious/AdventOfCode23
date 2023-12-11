@@ -89,6 +89,7 @@ public class ScratchCard {
             totalCopies += copyLine.getValue();
         }
 
+        // 6227972
         System.out.println("Total copies acquired: " + totalCopies);
     }
 
