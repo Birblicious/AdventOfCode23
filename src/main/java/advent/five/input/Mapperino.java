@@ -1,5 +1,6 @@
 package advent.five.input;
 
+import lombok.Getter;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
@@ -10,42 +11,65 @@ public class Mapperino {
     private static final String DELIMITER_NEW_LINE = "\n";
 
     private Map<Long, Long> seedMap = new HashMap<>();
-    private Map<Long, Long> daddioMappio = new HashMap<>();
+    private List<Long> seedList = new ArrayList<>();
+    private List<String> allAlmanacLines = new ArrayList<>();
 
     public void setSeedToSoilMap() {
         addSeedsToMap(seedString);
         System.out.println("-- START --");
         String[] almanacLines = seedToSoilString.split(DELIMITER_NEW_LINE);
-        trackSeedsAccordingToAlmanac(almanacLines, daddioMappio, seedMap);
+        trackSeedsAccordingToAlmanac(almanacLines, seedMap);
         System.out.println("-- Seed To Soil --");
 
         almanacLines = soilToFertilizerString.split(DELIMITER_NEW_LINE);
-        trackSeedsAccordingToAlmanac(almanacLines, daddioMappio, seedMap);
+        trackSeedsAccordingToAlmanac(almanacLines, seedMap);
         System.out.println("-- Soil To Fertilizer --");
         almanacLines = fertilizerToWaterString.split(DELIMITER_NEW_LINE);
-        trackSeedsAccordingToAlmanac(almanacLines, daddioMappio, seedMap);
+        trackSeedsAccordingToAlmanac(almanacLines, seedMap);
         System.out.println("-- Fertilizer To Water --");
 
 
         almanacLines = waterToLightString.split(DELIMITER_NEW_LINE);
-        trackSeedsAccordingToAlmanac(almanacLines, daddioMappio, seedMap);
+        trackSeedsAccordingToAlmanac(almanacLines, seedMap);
         System.out.println("-- Water To Light --");
 
         almanacLines = lightToTemperatureString.split(DELIMITER_NEW_LINE);
-        trackSeedsAccordingToAlmanac(almanacLines, daddioMappio, seedMap);
+        trackSeedsAccordingToAlmanac(almanacLines, seedMap);
         System.out.println("-- Light To Temperature --");
 
 
         almanacLines = temperatureToHumidityString.split(DELIMITER_NEW_LINE);
-        trackSeedsAccordingToAlmanac(almanacLines, daddioMappio, seedMap);
+        trackSeedsAccordingToAlmanac(almanacLines, seedMap);
         System.out.println("-- Temperature To Humidity --");
 
         almanacLines = humidityToLocationString.split(DELIMITER_NEW_LINE);
-        trackSeedsAccordingToAlmanac(almanacLines, daddioMappio, seedMap);
+        trackSeedsAccordingToAlmanac(almanacLines, seedMap);
         System.out.println("-- Humidity To Location --");
 
         // 323142486
         findTheSmallestLocation();
+    }
+
+    public void setSeedRange() {
+        seedRange(seedString);
+        long smallestSeedLocation = Long.MAX_VALUE;
+        long temp = 0L;
+        for(int i = 0; i < seedList.size(); i += 2) {
+            long seedStart = seedList.get(i);
+            long seedEnd = seedStart + seedList.get((i + 1)) - 1;
+            System.out.println("***" + seedStart);
+            for (long j = seedStart; j <= seedEnd; j = j + 1000000) {
+                temp = j;
+                for (String almanacLine: allAlmanacLines) {
+                    String[] almanac = almanacLine.split(DELIMITER_NEW_LINE);
+                    temp = trackSeedRangeAccordingToAlmanac(almanac, temp);
+                }
+                if(temp < smallestSeedLocation)
+                    smallestSeedLocation = temp;
+            }
+            System.out.println(temp + "**");
+        }
+        System.out.println("Smallest Location is: " + smallestSeedLocation);
     }
 
     private void addSeedsToMap(String seedLine) {
@@ -56,7 +80,38 @@ public class Mapperino {
         }
     }
 
-    private void trackSeedsAccordingToAlmanac(String[] almanacLines, Map<Long, Long> map, Map<Long, Long> seedMap) {
+    private void seedRange(String seedLine) {
+        String[] seeds = seedLine.split(" ");
+        for (String seed: seeds) {
+            seedList.add(Long.parseLong(seed));
+        }
+        allAlmanacLines.add(seedToSoilString);
+        allAlmanacLines.add(soilToFertilizerString);
+        allAlmanacLines.add(fertilizerToWaterString);
+        allAlmanacLines.add(waterToLightString);
+        allAlmanacLines.add(lightToTemperatureString);
+        allAlmanacLines.add(temperatureToHumidityString);
+        allAlmanacLines.add(humidityToLocationString);
+    }
+
+    private long trackSeedRangeAccordingToAlmanac(String[] almanacLines, long input) {
+        long output = input;
+        for (String line: almanacLines) {
+            String[] split = line.split(" ");
+
+            long source = Long.parseLong(split[1]);
+            long target = Long.parseLong(split[0]);
+            long range = Long.parseLong(split[2]);
+
+                if(source <= input && source + range >= input) {
+                    output = input - source + target;
+                    break;
+                }
+        }
+        return output;
+    }
+
+    private void trackSeedsAccordingToAlmanac(String[] almanacLines, Map<Long, Long> seedMap) {
 
         List<Long> changedSeeds = new ArrayList<>();
 
@@ -95,7 +150,9 @@ public class Mapperino {
         System.out.println("Smallest Location: " + smallestLocation);
     }
 
+    @Getter
     private String seedString = "2637529854 223394899 3007537707 503983167 307349251 197383535 3543757609 276648400 2296792159 141010855 116452725 5160533 2246652813 49767336 762696372 160455077 3960442213 105867001 1197133308 38546766";
+    @Getter
     private String seedStringExample = "79 14 55 13";
 
     private String seedToSoilString =
